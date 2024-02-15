@@ -3,16 +3,27 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class XMLParser {
-    public void parseFromXML(){
-        ToDoList toDoList = new ToDoList();
 
-        File file = new File("src/main/resources/Task.xml");
+    private ToDoList toDoList = new ToDoList();
+
+    public void parseFromXML() {
+
+        File file = new File("Task.xml");
+
+        if (file.length() == 0) {
+            System.out.println("File is empty");
+            return;
+        }
+
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         Document doc = null;
         try {
@@ -22,18 +33,20 @@ public class XMLParser {
             return;
         }
 
-        Node taskNode = doc.getFirstChild();
+        Node taskNode = doc.getDocumentElement();
+
         if (taskNode == null) {
-            System.out.println("Unlucky");
+            System.out.println("There are no tasks");
+            return;
         }
 
         NodeList taskChildes = taskNode.getChildNodes();
 
-
         List<Task> taskList = new ArrayList<>();
-        for (int i = 0; i < taskChildes.getLength(); i++){
 
-            if (taskChildes.item(i).getNodeType() != Node.ELEMENT_NODE){
+        for (int i = 0; i < taskChildes.getLength(); i++) {
+
+            if (taskChildes.item(i).getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
@@ -50,9 +63,10 @@ public class XMLParser {
             LocalDate complete = null;
 
             NodeList elementsTask = taskChildes.item(i).getChildNodes();
+
             for (int j = 0; j < elementsTask.getLength(); j++) {
 
-                if (elementsTask.item(j).getNodeType() != Node.ELEMENT_NODE){
+                if (elementsTask.item(j).getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
 
@@ -89,16 +103,18 @@ public class XMLParser {
                 }
             }
 
-            Task task = new Task(title, description, priority, deadline, status);
+            Task task = new Task(id, title, description, priority, deadline, status);
             task.setCompletionDate(complete);
             taskList.add(task);
 
         }
 
         toDoList.setTasks(taskList);
-        System.out.println(toDoList.toString());
 
     }
 
+    public ToDoList getToDoList() {
+        return toDoList;
+    }
 
 }

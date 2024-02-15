@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ToDoList>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><ToDoList>
     <Task>
         <id>1</id>
         <title>title1</title>
         <description>description1</description>
         <priority>10</priority>
-        <deadline>2017-02-12</deadline>
+        <deadline>2017-07-21</deadline>
         <status>DONE</status>
         <complete>2017-02-19</complete>
     </Task>
@@ -17,4 +16,4 @@
         <deadline>2022-02-12</deadline>
         <status>NEW</status>
     </Task>
-</ToDoList>
+<Task><id>3</id><title>papa</title><description>lgbkekrlnhly</description><priority>4</priority><deadline>2000-10-10</deadline><status>NEW</status></Task></ToDoList>

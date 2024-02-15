@@ -13,8 +13,12 @@ public class ToDoList {
 
     @Override
     public String toString() {
-        return "ToDoList{" +
-                "tasks=" + tasks +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("All tasks:\n");
+        for (Task task : tasks) {
+            sb.append(task.toString()).append("\n");
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }

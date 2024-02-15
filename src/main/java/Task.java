@@ -11,8 +11,8 @@ public class Task {
     private TaskStatus status;
     private LocalDate completionDate;
 
-    public Task(String title, String description, int priority, LocalDate deadline, TaskStatus status) {
-        this.id = ++lastId;
+    public Task(int id, String title, String description, int priority, LocalDate deadline, TaskStatus status) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
