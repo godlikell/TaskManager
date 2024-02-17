@@ -1,12 +1,9 @@
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class CollectionManager {
 
-//    DOMxmlWriter dxm;
-    Scanner console;
     private final Map<String, String> commandPool = new LinkedHashMap<>();
 
     {
@@ -30,55 +27,65 @@ public class CollectionManager {
     }
 
     public void listPrint() {
-        XMLParser xmlP = new XMLParser();
-        xmlP.parseFromXML();
-        System.out.println(xmlP.getToDoList().toString());
+        XMLReader xmlP = new XMLReader();
+        xmlP.readerFromXML();
+        if (xmlP.getToDoList().getTasks() != null) {
+            System.out.println(xmlP.getToDoList().toString());
+        }
 
     }
 
     public void listNewPrint() {
-        XMLParser xmlP = new XMLParser();
-        xmlP.parseFromXML();
-        System.out.println("New tasks: ");
-        xmlP.getToDoList().getTasks().stream().filter(e -> e.getStatus() == TaskStatus.NEW)
-                .forEach(System.out::println);
+        XMLReader xmlP = new XMLReader();
+        xmlP.readerFromXML();
+        if (xmlP.getToDoList().getTasks() != null) {
+            System.out.println("New tasks: ");
+            xmlP.getToDoList().getTasks().stream().filter(e -> e.getStatus() == TaskStatus.NEW)
+                    .forEach(System.out::println);
 
+        }
     }
 
     public void listInProgressPrint() {
-        XMLParser xmlP = new XMLParser();
-        xmlP.parseFromXML();
-        System.out.println("In progress tasks: ");
-        xmlP.getToDoList().getTasks().stream().filter(e -> e.getStatus() == TaskStatus.IN_PROGRESS)
-                .forEach(System.out::println);
+        XMLReader xmlP = new XMLReader();
+        xmlP.readerFromXML();
+        if (xmlP.getToDoList().getTasks() != null) {
+            System.out.println("In progress tasks: ");
+            xmlP.getToDoList().getTasks().stream().filter(e -> e.getStatus() == TaskStatus.IN_PROGRESS)
+                    .forEach(System.out::println);
 
+        }
     }
 
     public void listDonePrint() {
-        XMLParser xmlP = new XMLParser();
-        xmlP.parseFromXML();
-        System.out.println("Done tasks: ");
-        xmlP.getToDoList().getTasks().stream().filter(e -> e.getStatus() == TaskStatus.DONE)
-                .forEach(System.out::println);
+        XMLReader xmlP = new XMLReader();
+        xmlP.readerFromXML();
+        if (xmlP.getToDoList().getTasks() != null) {
+            System.out.println("Done tasks: ");
+            xmlP.getToDoList().getTasks().stream().filter(e -> e.getStatus() == TaskStatus.DONE)
+                    .forEach(System.out::println);
 
+        }
     }
 
-    public void completeTask() {
+    public void completeTask(Scanner sc) {
+
+        TaskComplete.doTaskComplete(sc);
     }
 
-    public void newTask() {
+    public void newTask(Scanner sc) {
 
-        DOMxmlWriter dxm = new DOMxmlWriter();
-        dxm.addNewTask();
+        TaskAdd.addNewTask(sc);
     }
 
 
-    public void editTask() {
+    public void editTask(Scanner sc) {
+
+        TaskEdit.editTaskById(sc);
     }
 
-    public void removeTask() {
-    }
+    public void removeTask(Scanner sc) {
 
-    public void exitMenu() {
+        TaskRemover.removeTaskById(sc);
     }
 }

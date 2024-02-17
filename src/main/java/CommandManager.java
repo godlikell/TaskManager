@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class CommandManager {
     CollectionManager collectionManager;
-    Scanner console;
 
     public CommandManager(CollectionManager collectionManager) {
 
@@ -10,7 +9,7 @@ public class CommandManager {
     }
 
     public void readInput() {
-        console = new Scanner(System.in);
+        Scanner console = new Scanner(System.in);
         System.out.println("Please, enter a command. (Enter \"help\" to get information about available commands)");
         while (true) {
             String command = console.nextLine().trim();
@@ -32,21 +31,20 @@ public class CommandManager {
                         collectionManager.listDonePrint();
                         break;
                     case "complete":
-                        collectionManager.completeTask();
+                        collectionManager.completeTask(console);
                         break;
                     case "new":
-                        collectionManager.newTask();
+                        collectionManager.newTask(console);
                         break;
                     case "edit":
-                        collectionManager.editTask();
+                        collectionManager.editTask(console);
                         break;
                     case "remove":
-                        collectionManager.removeTask();
+                        collectionManager.removeTask(console);
                         break;
                     case "exit":
                         console.close();
                         System.exit(0);
-                        collectionManager.exitMenu();
                         break;
                     default:
                         throw new Exception("Incorrect command input. Enter \"help\" to get " +

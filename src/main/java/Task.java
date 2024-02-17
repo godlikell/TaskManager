@@ -2,14 +2,14 @@ import java.time.LocalDate;
 
 
 public class Task {
-    private static int lastId = 0;
+
     private int id;
     private String title;
     private String description;
     private int priority;
     private LocalDate deadline;
     private TaskStatus status;
-    private LocalDate completionDate;
+    private LocalDate complete;
 
     public Task(int id, String title, String description, int priority, LocalDate deadline, TaskStatus status) {
         this.id = id;
@@ -19,6 +19,8 @@ public class Task {
         this.deadline = deadline;
         this.status = status;
     }
+
+    public Task() {}
 
     public int getId() {
         return id;
@@ -44,8 +46,8 @@ public class Task {
         return status;
     }
 
-    public LocalDate getCompletionDate() {
-        return completionDate;
+    public LocalDate getCompleteDate() {
+        return complete;
     }
 
     public void setId(int id) {
@@ -72,20 +74,26 @@ public class Task {
         this.status = status;
     }
 
-    public void setCompletionDate(LocalDate completionDate) {
-        this.completionDate = completionDate;
+    public void setCompleteDate(LocalDate complete) {
+        this.complete = complete;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", priority=" + priority +
-                ", deadline=" + deadline +
-                ", status=" + status +
-                ", completionDate=" + completionDate +
-                '}';
+        StringBuilder sb = new StringBuilder("Task{")
+                .append("id=").append(id)
+                .append(", title='").append(title).append('\'')
+                .append(", description='").append(description).append('\'')
+                .append(", priority=").append(priority)
+                .append(", deadline=").append(deadline)
+                .append(", status=").append(status);
+
+        if (complete != null) {
+            sb.append(", complete=").append(complete);
+        }
+
+        sb.append('}');
+
+        return sb.toString();
     }
 }

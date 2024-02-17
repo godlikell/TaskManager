@@ -3,24 +3,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLParser {
+public class XMLReader {
+
+    private static final String XML_FILE_PATH = "Task.xml";
 
     private ToDoList toDoList = new ToDoList();
 
-    public void parseFromXML() {
+    public void readerFromXML() {
 
-        File file = new File("Task.xml");
+        File file = new File(XML_FILE_PATH);
 
         if (file.length() == 0) {
-            System.out.println("File is empty");
+            System.out.println("There are no tasks");
             return;
         }
 
@@ -34,11 +33,6 @@ public class XMLParser {
         }
 
         Node taskNode = doc.getDocumentElement();
-
-        if (taskNode == null) {
-            System.out.println("There are no tasks");
-            return;
-        }
 
         NodeList taskChildes = taskNode.getChildNodes();
 
@@ -104,7 +98,8 @@ public class XMLParser {
             }
 
             Task task = new Task(id, title, description, priority, deadline, status);
-            task.setCompletionDate(complete);
+            task.setCompleteDate(complete);
+
             taskList.add(task);
 
         }
@@ -115,6 +110,6 @@ public class XMLParser {
 
     public ToDoList getToDoList() {
         return toDoList;
-    }
 
+    }
 }

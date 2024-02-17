@@ -12,26 +12,23 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-public class DOMxmlWriter {
+public class TaskAdd {
 
-    public void addNewTask() {
+
+    public static void addNewTask(Scanner sc) {
         try {
             Document doc;
             File file = new File("Task.xml");
 
             if (file.exists()) {
                 // Загрузка существующего XML файла
-                System.out.println("File exists");
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 doc = builder.parse(file);
             } else {
                 // Создание нового документа XML
-                System.out.println("File NOT exists");
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 doc = builder.newDocument();
@@ -43,15 +40,14 @@ public class DOMxmlWriter {
             Element rootElement = doc.getDocumentElement();
 
             // Получение пользовательского ввода
-            Scanner scanner = new Scanner(System.in);
+//            Scanner scanner = new Scanner(System.in);
 
             // Создание нового элемента <Task>
             Element taskElement = doc.createElement("Task");
 
             // Создание элементов <id>, <title>, <description>, <priority>, <deadline>, <status>, <complete>
             Element idElement = doc.createElement("id");
-            System.out.print("Введите id: ");
-            int id = Integer.parseInt(scanner.nextLine());
+            int id = AutoIncrementId.getAutoIncrementId();
             idElement.appendChild(doc.createTextNode(String.valueOf(id)));
 
             Element titleElement = doc.createElement("title");
@@ -59,43 +55,44 @@ public class DOMxmlWriter {
 
             do {
                 System.out.print("Введите title: ");
-                title = scanner.nextLine();
-
-                if (title.length() > 50) {
-                    System.out.println("title must be under 50 char");
-                }
-            } while (title.length() > 50);
+                title = sc.nextLine();
+            } while (Title.titleValid(title));
 
             titleElement.appendChild(doc.createTextNode(title));
 
             Element descriptionElement = doc.createElement("description");
             System.out.print("Введите description: ");
-            String description = scanner.nextLine();
+            String description = sc.nextLine();
             descriptionElement.appendChild(doc.createTextNode(description));
 
             Element priorityElement = doc.createElement("priority");
-            System.out.print("Введите priority: ");
-            int priority = Integer.parseInt(scanner.nextLine());
-            priorityElement.appendChild(doc.createTextNode(String.valueOf(priority)));
+
+            String priority;
+//            boolean validPriority;
+            do {
+                System.out.print("Введите priority: ");
+                priority = sc.nextLine();
+
+//                validPriority = Priority.priorityValid(priority);
+            } while (Priority.priorityValid(priority));
+
+
+//            System.out.print("Введите priority: ");
+//            int priority = Integer.parseInt(sc.nextLine());
+
+
+            priorityElement.appendChild(doc.createTextNode(priority));
 
             Element deadlineElement = doc.createElement("deadline");
 
-            LocalDate deadline = null;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            boolean isValidDate = false;
+            String deadlineStr;
+            do {
+                System.out.println("Введите deadline (в формате ГГГГ-ММ-ДД): ");
+                deadlineStr = sc.nextLine();
 
-            while (!isValidDate) {
-                System.out.print("Введите deadline (в формате ГГГГ-ММ-ДД): ");
-                String input = scanner.nextLine();
-                try {
-                    deadline = LocalDate.parse(input, formatter);
-                    isValidDate = true;
-                } catch (DateTimeParseException e) {
-                    System.out.println("Неправильный формат даты. Попробуйте снова.");
-                }
-            }
+            } while (Deadline.deadlineValid(deadlineStr));
 
-            deadlineElement.appendChild(doc.createTextNode(String.valueOf(deadline)));
+            deadlineElement.appendChild(doc.createTextNode(deadlineStr));
 
             Element statusElement = doc.createElement("status");
             TaskStatus status = TaskStatus.NEW;
@@ -122,6 +119,7 @@ public class DOMxmlWriter {
             StreamResult result = new StreamResult(writer);
             transformer.transform(source, result);
             writer.close();
+
 
             System.out.println("Данные успешно добавлены в XML файл.");
 

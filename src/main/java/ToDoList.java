@@ -6,10 +6,10 @@ public class ToDoList {
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
-
     public List<Task> getTasks() {
         return tasks;
     }
+
 
     @Override
     public String toString() {
@@ -18,7 +18,8 @@ public class ToDoList {
         for (Task task : tasks) {
             sb.append(task.toString()).append("\n");
         }
-        sb.append("}");
+//        sb.append("}");
         return sb.toString();
     }
+
 }
