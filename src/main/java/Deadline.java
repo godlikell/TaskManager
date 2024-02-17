@@ -1,8 +1,6 @@
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 public class Deadline {
 
@@ -12,7 +10,7 @@ public class Deadline {
             LocalDate deadline = LocalDate.parse(deadlineStr, formatter);
             return false;
         } catch (DateTimeParseException e) {
-            System.out.println("Неправильный формат даты. Попробуйте снова.");
+            System.out.println("The date format is incorrect. Try again");
             return true;
 
         }

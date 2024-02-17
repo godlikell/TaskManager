@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLReader {
+public class TaskReader {
 
     private static final String XML_FILE_PATH = "Task.xml";
 
@@ -24,11 +24,11 @@ public class XMLReader {
         }
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        Document doc = null;
+        Document doc;
         try {
             doc = dbf.newDocumentBuilder().parse(file);
         } catch (Exception e) {
-            System.out.println("Open parsing error " + e.toString());
+            System.out.println("Open parsing error " + e);
             return;
         }
 
@@ -53,7 +53,7 @@ public class XMLReader {
             String description = "";
             int priority = 0;
             LocalDate deadline = null;
-            TaskStatus status = null;
+            Status status = null;
             LocalDate complete = null;
 
             NodeList elementsTask = taskChildes.item(i).getChildNodes();
@@ -86,7 +86,7 @@ public class XMLReader {
                         break;
                     }
                     case "status": {
-                        status = TaskStatus.valueOf(elementsTask.item(j).getTextContent());
+                        status = Status.valueOf(elementsTask.item(j).getTextContent());
                         break;
                     }
                     case "complete": {

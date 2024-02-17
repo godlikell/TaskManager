@@ -7,11 +7,11 @@ public class Priority {
             if (priority >= 0 && priority <= 10) {
                 return false;
             } else {
-                System.out.println("Priority должен быть от 0 до 10. Попробуйте снова.");
+                System.out.println("Priority must be between 0 and 10. Try again");
                 return true;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Неправильный priority. Попробуйте снова.");
+            System.out.println("The wrong priority. Try again");
             return true;
         }
     }

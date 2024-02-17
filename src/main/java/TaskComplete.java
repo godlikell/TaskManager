@@ -19,7 +19,7 @@ public class TaskComplete {
 
         int id;
         do {
-            System.out.print("Введите Id: ");
+            System.out.print("Enter the task Id: ");
             String idStr = sc.nextLine();
 
             id = Id.idValid(idStr);
@@ -27,57 +27,43 @@ public class TaskComplete {
 
 
         try {
-            // Создаем фабрику для создания парсера
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-
-            // Загружаем XML-файл
             Document document = builder.parse(XML_FILE_PATH);
 
-            // Получаем список всех Task элементов
             NodeList taskList = document.getElementsByTagName("Task");
 
-            // Переменная для проверки наличия задачи с заданным идентификатором
             boolean taskExists = false;
 
-            // Перебираем все Task элементы
             for (int i = 0; i < taskList.getLength(); i++) {
                 Element task = (Element) taskList.item(i);
-                // Получаем значение идентификатора текущего Task элемента
+
                 int taskId = Integer.parseInt(task.getElementsByTagName("id").item(0).getTextContent());
 
                 if (taskId == id) {
-                    // Проверяем текущее значение элемента status
                     String currentStatus = task.getElementsByTagName("status").item(0).getTextContent();
                     if (!currentStatus.equals("DONE")) {
-                        // Если значение status не равно "DONE", то перезаписываем его
                         task.getElementsByTagName("status").item(0).setTextContent("DONE");
-                        System.out.println("Перезаписали");
+                        System.out.println("Changed the status to done");
 
-                        // Проверяем наличие элемента complete
                         NodeList completeList = task.getElementsByTagName("complete");
                         if (completeList.getLength() > 0) {
-                            // Если элемент уже существует, перезаписываем его значение
                             Element completeElement = (Element) completeList.item(0);
                             completeElement.setTextContent(getCurrentDate());
                         } else {
-                            // Если элемента complete нет, создаем новый элемент
                             Element completeElement = document.createElement("complete");
                             completeElement.setTextContent(getCurrentDate());
-                            // Добавляем элемент complete к задаче (Task) элементу
                             task.appendChild(completeElement);
                         }
                     }
                     else {
-                        System.out.println("Task уже DONE");
+                        System.out.println("Task already done");
                     }
 
                     taskExists = true;
                     break;
                 }
             }
-
-            // Сохраняем изменения в XML-файле
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(document);
@@ -85,7 +71,7 @@ public class TaskComplete {
             transformer.transform(source, result);
 
             if (!taskExists) {
-                System.out.println("Задачи с ID " + id + " не существует.");
+                System.out.println("The task with the Id " + id + " does not exist");
             }
 
         } catch (Exception e) {

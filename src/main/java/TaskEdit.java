@@ -9,27 +9,26 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class TaskEdit {
 
+    private static final String XML_FILE_PATH = "Task.xml";
     public static void editTaskById(Scanner sc) {
 
         int id;
         do {
-            System.out.print("Введите Id: ");
+            System.out.print("Enter the task Id: ");
             String idStr = sc.nextLine();
 
             id = Id.idValid(idStr);
         } while (id == -1);
 
         try {
-            File xmlFile = new File("Task.xml");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(xmlFile);
+            Document document = builder.parse(XML_FILE_PATH);
 
             document.getDocumentElement().normalize();
             NodeList taskList = document.getElementsByTagName("Task");
@@ -55,7 +54,7 @@ public class TaskEdit {
                                 .item(0).getTextContent()));
                         task.setDeadline(LocalDate.parse(taskElement.getElementsByTagName("deadline")
                                 .item(0).getTextContent()));
-                        task.setStatus(TaskStatus.valueOf(taskElement.getElementsByTagName("status")
+                        task.setStatus(Status.valueOf(taskElement.getElementsByTagName("status")
                                 .item(0).getTextContent()));
                         NodeList completeDateElements = taskElement.getElementsByTagName("complete");
                         if (completeDateElements.getLength() > 0) {
@@ -65,16 +64,7 @@ public class TaskEdit {
 
                         System.out.println(task);
 
-                        // сделать проверку на ввод
                         String userInput;
-
-//                        while (true) {
-//                            System.out.println("Enter 'edit' to update data or 'cancel' to abort:");
-//                            userInput = sc.nextLine().trim().toLowerCase();
-//
-//                            if (userInput.equals("cancel") || userInput.equals("edit"))
-//
-//                        }
 
                         while (true) {
                             System.out.println("Enter 'edit' to update data or 'cancel' to abort:");
@@ -88,21 +78,20 @@ public class TaskEdit {
                                 String newTitle;
 
                                 do {
-                                    System.out.print("Введите title: ");
+                                    System.out.print("Enter the title: ");
                                     newTitle = sc.nextLine();
                                 } while (Title.titleValid(newTitle));
 
                                 taskElement.getElementsByTagName("title").item(0).setTextContent(newTitle);
 
-                                // Добавьте аналогичный код для остальных элементов (description, priority, deadline, status)
-
-                                System.out.print("Введите description: ");
+                                System.out.print("Enter a description: ");
                                 String description = sc.nextLine();
-                                taskElement.getElementsByTagName("description").item(0).setTextContent(description);
+                                taskElement.getElementsByTagName("description")
+                                        .item(0).setTextContent(description);
 
                                 String priority;
                                 do {
-                                    System.out.print("Введите priority: ");
+                                    System.out.print("Enter priority: ");
                                     priority = sc.nextLine();
 
                                 } while (Priority.priorityValid(priority));
@@ -111,23 +100,23 @@ public class TaskEdit {
 
                                 String deadline;
                                 do {
-                                    System.out.println("Введите deadline (в формате ГГГГ-ММ-ДД): ");
+                                    System.out.println("Enter the deadline (in the format YYYY-MM-DD): ");
                                     deadline = sc.nextLine();
 
                                 } while (Deadline.deadlineValid(deadline));
                                 taskElement.getElementsByTagName("deadline").item(0).setTextContent(deadline);
 
                                 String statusStr;
-                                TaskStatus status = null;
+                                Status status = null;
 
                                 do {
-                                    System.out.println("Введите status (new или in_progress): ");
+                                    System.out.println("Enter status ('new' or 'in_progress'): ");
                                     statusStr = sc.nextLine().trim().toLowerCase();
 
                                     try {
-                                        status = TaskStatus.getStatusFromInput(statusStr);
+                                        status = Status.getStatusFromInput(statusStr);
                                     } catch (IllegalArgumentException e) {
-                                        System.out.println("Некорректный ввод. Попробуйте ещё раз.");
+                                        System.out.println("Incorrect input. Try again");
                                     }
                                 } while (status == null);
 
@@ -138,24 +127,21 @@ public class TaskEdit {
                                 break;
 
                             } else {
-                                System.out.println("Invalid input. Please try again.");
+                                System.out.println("Invalid input. Try again");
                             }
-
                         }
                     }
                 }
             }
 
-            // Сохранение изменений в файл
-            // Ваш код для сохранения измененного XML файла
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult("Task.xml");
+            StreamResult result = new StreamResult(XML_FILE_PATH);
             transformer.transform(source, result);
 
             if (!taskExists) {
-                System.out.println("Задачи с ID " + id + " не существует.");
+                System.out.println("The task with the Id " + id + " does not exist");
             }
 
         } catch (Exception e) {

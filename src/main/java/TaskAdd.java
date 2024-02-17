@@ -11,24 +11,21 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class TaskAdd {
 
-
+    private static final String XML_FILE_PATH = "Task.xml";
     public static void addNewTask(Scanner sc) {
         try {
             Document doc;
-            File file = new File("Task.xml");
+            File file = new File(XML_FILE_PATH);
 
             if (file.exists()) {
-                // Загрузка существующего XML файла
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 doc = builder.parse(file);
             } else {
-                // Создание нового документа XML
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 doc = builder.newDocument();
@@ -36,16 +33,10 @@ public class TaskAdd {
                 doc.appendChild(rootElement);
             }
 
-            // Получение корневого элемента
             Element rootElement = doc.getDocumentElement();
 
-            // Получение пользовательского ввода
-//            Scanner scanner = new Scanner(System.in);
-
-            // Создание нового элемента <Task>
             Element taskElement = doc.createElement("Task");
 
-            // Создание элементов <id>, <title>, <description>, <priority>, <deadline>, <status>, <complete>
             Element idElement = doc.createElement("id");
             int id = AutoIncrementId.getAutoIncrementId();
             idElement.appendChild(doc.createTextNode(String.valueOf(id)));
@@ -54,32 +45,26 @@ public class TaskAdd {
             String title;
 
             do {
-                System.out.print("Введите title: ");
+                System.out.print("Enter the title: ");
                 title = sc.nextLine();
             } while (Title.titleValid(title));
 
             titleElement.appendChild(doc.createTextNode(title));
 
             Element descriptionElement = doc.createElement("description");
-            System.out.print("Введите description: ");
+            System.out.print("Enter a description: ");
             String description = sc.nextLine();
             descriptionElement.appendChild(doc.createTextNode(description));
 
             Element priorityElement = doc.createElement("priority");
 
             String priority;
-//            boolean validPriority;
+
             do {
-                System.out.print("Введите priority: ");
+                System.out.print("Enter priority: ");
                 priority = sc.nextLine();
 
-//                validPriority = Priority.priorityValid(priority);
             } while (Priority.priorityValid(priority));
-
-
-//            System.out.print("Введите priority: ");
-//            int priority = Integer.parseInt(sc.nextLine());
-
 
             priorityElement.appendChild(doc.createTextNode(priority));
 
@@ -87,7 +72,7 @@ public class TaskAdd {
 
             String deadlineStr;
             do {
-                System.out.println("Введите deadline (в формате ГГГГ-ММ-ДД): ");
+                System.out.println("Enter the deadline (in the format YYYY-MM-DD): ");
                 deadlineStr = sc.nextLine();
 
             } while (Deadline.deadlineValid(deadlineStr));
@@ -95,10 +80,9 @@ public class TaskAdd {
             deadlineElement.appendChild(doc.createTextNode(deadlineStr));
 
             Element statusElement = doc.createElement("status");
-            TaskStatus status = TaskStatus.NEW;
+            Status status = Status.NEW;
             statusElement.appendChild(doc.createTextNode(String.valueOf(status)));
 
-            // Добавление элементов в <Task>
             taskElement.appendChild(idElement);
             taskElement.appendChild(titleElement);
             taskElement.appendChild(descriptionElement);
@@ -106,10 +90,8 @@ public class TaskAdd {
             taskElement.appendChild(deadlineElement);
             taskElement.appendChild(statusElement);
 
-            // Добавление <Task> в корневой элемент <ToDoList>
             rootElement.appendChild(taskElement);
 
-            // Запись изменений в файл
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "no"); // Включаем форматирование
@@ -121,7 +103,7 @@ public class TaskAdd {
             writer.close();
 
 
-            System.out.println("Данные успешно добавлены в XML файл.");
+            System.out.println("The data has been successfully added to the XML file");
 
         } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
             ex.printStackTrace();

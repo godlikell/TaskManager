@@ -1,46 +1,47 @@
 import java.util.Scanner;
 
 public class CommandManager {
-    CollectionManager collectionManager;
+    ProjectManager projectManager;
 
-    public CommandManager(CollectionManager collectionManager) {
+    public CommandManager(ProjectManager projectManager) {
 
-        this.collectionManager = collectionManager;
+        this.projectManager = projectManager;
     }
 
     public void readInput() {
         Scanner console = new Scanner(System.in);
-        System.out.println("Please, enter a command. (Enter \"help\" to get information about available commands)");
+        System.out.println("Enter \"help\" to get information about available commands");
         while (true) {
+            System.out.println("Enter a command:");
             String command = console.nextLine().trim();
             try {
                 switch (command) {
                     case "help":
-                        collectionManager.help();
+                        projectManager.help();
                         break;
                     case "list":
-                        collectionManager.listPrint();
+                        projectManager.listPrint();
                         break;
                     case "list -s new":
-                        collectionManager.listNewPrint();
+                        projectManager.listNewPrint();
                         break;
                     case "list -s in_progress":
-                        collectionManager.listInProgressPrint();
+                        projectManager.listInProgressPrint();
                         break;
                     case "list -s done":
-                        collectionManager.listDonePrint();
+                        projectManager.listDonePrint();
                         break;
                     case "complete":
-                        collectionManager.completeTask(console);
+                        projectManager.completeTask(console);
                         break;
                     case "new":
-                        collectionManager.newTask(console);
+                        projectManager.newTask(console);
                         break;
                     case "edit":
-                        collectionManager.editTask(console);
+                        projectManager.editTask(console);
                         break;
                     case "remove":
-                        collectionManager.removeTask(console);
+                        projectManager.removeTask(console);
                         break;
                     case "exit":
                         console.close();

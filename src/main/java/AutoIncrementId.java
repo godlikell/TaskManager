@@ -11,7 +11,6 @@ public class AutoIncrementId {
         int newId = 0;
 
         try {
-            // Прочитать текущую максимальную идентификацию из файла TXT
             File idFile = new File(TXT_FILE_PATH);
             int maxId;
             if (idFile.exists()) {
@@ -22,16 +21,11 @@ public class AutoIncrementId {
                 maxId = 1;
             }
 
-
-            // Увеличить максимальную идентификацию на 1
             maxId++;
 
-            // Записать новую максимальную идентификацию в файл TXT
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(idFile))) {
                 writer.write(String.valueOf(maxId));
             }
-
-            // Использование новой максимальной идентификации для создания объекта
 
             newId = maxId;
 

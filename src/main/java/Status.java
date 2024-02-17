@@ -1,9 +1,9 @@
-public enum TaskStatus {
+public enum Status {
     NEW,
     IN_PROGRESS,
     DONE;
 
-    public static TaskStatus getStatusFromInput(String userInput) {
+    public static Status getStatusFromInput(String userInput) {
         String input = userInput.trim().toLowerCase();
         switch (input) {
             case "new":
@@ -11,7 +11,7 @@ public enum TaskStatus {
             case "in_progress":
                 return IN_PROGRESS;
             default:
-                throw new IllegalArgumentException("Некорректный статус: " + userInput);
+                throw new IllegalArgumentException("Incorrect status: " + userInput);
         }
     }
 

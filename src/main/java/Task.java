@@ -8,10 +8,10 @@ public class Task {
     private String description;
     private int priority;
     private LocalDate deadline;
-    private TaskStatus status;
+    private Status status;
     private LocalDate complete;
 
-    public Task(int id, String title, String description, int priority, LocalDate deadline, TaskStatus status) {
+    public Task(int id, String title, String description, int priority, LocalDate deadline, Status status) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -42,7 +42,7 @@ public class Task {
         return deadline;
     }
 
-    public TaskStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -70,7 +70,7 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public void setStatus(TaskStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -80,7 +80,7 @@ public class Task {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Task{")
+        StringBuilder sb = new StringBuilder("{")
                 .append("id=").append(id)
                 .append(", title='").append(title).append('\'')
                 .append(", description='").append(description).append('\'')
