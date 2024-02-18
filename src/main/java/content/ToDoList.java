@@ -1,7 +1,5 @@
 package content;
 
-import content.Task;
-
 import java.util.List;
 
 /**

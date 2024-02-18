@@ -1,7 +1,5 @@
 package content;
 
-import content.Status;
-
 import java.time.LocalDate;
 
 /**

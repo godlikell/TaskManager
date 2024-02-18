@@ -1,6 +1,7 @@
-package controllers.utillity;
+package controllers.strategies;
 
 import content.*;
+import controllers.strategy.Command;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,10 +19,14 @@ import java.util.Scanner;
 /**
  * A class that reads user input and modifies Task elements.
  */
-public class TaskEdit {
+public class EditTaskCommand implements Command {
+    Scanner sc;
+    public EditTaskCommand(Scanner sc) {
+        this.sc = sc;
+    }
     private static final String XML_FILE_PATH = "Tasks.xml";
-    public static void editTaskById(Scanner sc) {
-
+    @Override
+    public void execute() {
         int id;
         do {
             System.out.print("Enter the task Id: ");

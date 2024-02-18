@@ -1,4 +1,4 @@
-package controllers.utillity;
+package controllers;
 
 import content.Status;
 import content.Task;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * A class that reads an XML file and saves Task objects in a list.
  */
-public class TaskReader {
+public class ReaderFromXml {
     private static final String XML_FILE_PATH = "Tasks.xml";
 
     private ToDoList toDoList = new ToDoList();

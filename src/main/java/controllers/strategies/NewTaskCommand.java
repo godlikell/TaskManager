@@ -1,6 +1,7 @@
-package controllers.utillity;
+package controllers.strategies;
 
 import content.*;
+import controllers.strategy.Command;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -8,7 +9,10 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -19,9 +23,15 @@ import java.util.Scanner;
 /**
  * A class that reads user input and saves this data to XML file.
  */
-public class TaskAdd {
+public class NewTaskCommand implements Command {
+    Scanner sc;
+    public NewTaskCommand(Scanner sc){
+        this.sc = sc;
+    }
     private static final String XML_FILE_PATH = "Tasks.xml";
-    public static void addNewTask(Scanner sc) {
+
+    @Override
+    public void execute() {
         try {
             Document doc;
             File file = new File(XML_FILE_PATH);
@@ -115,4 +125,3 @@ public class TaskAdd {
         }
     }
 }
-

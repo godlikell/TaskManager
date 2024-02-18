@@ -1,5 +1,10 @@
 package controllers;
 
+import controllers.strategies.*;
+import controllers.strategy.Command;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -7,58 +12,41 @@ import java.util.Scanner;
  * Reads user input.
  */
 public class CommandManager {
-    ProjectManager projectManager;
-    public CommandManager(ProjectManager projectManager) {
+    private Scanner console = new Scanner(System.in);
+    private final Map<String, Command> commandMap = new HashMap<>();
 
-        this.projectManager = projectManager;
+    public CommandManager() {
+        commandMap.put("help", new HelpCommand());
+        commandMap.put("list", new ShowTasksAllCommand());
+        commandMap.put("list -s new", new ShowTasksNewCommand());
+        commandMap.put("list -s in_progress", new ShowTasksInProgressCommand());
+        commandMap.put("list -s done", new ShowTasksDoneCommand());
+        commandMap.put("complete", new CompleteTaskCommand(console));
+        commandMap.put("new", new NewTaskCommand(console));
+        commandMap.put("edit", new EditTaskCommand(console));
+        commandMap.put("remove", new RemoveTaskCommand(console));
+        commandMap.put("exit", new ExitCommand(console));
+
     }
 
     public void readInput() {
-        Scanner console = new Scanner(System.in);
         System.out.println("Enter \"help\" to get information about available commands");
         while (true) {
             System.out.println("Enter a command:");
-            String command = console.nextLine().trim();
-            try {
-                switch (command) {
-                    case "help":
-                        projectManager.help();
-                        break;
-                    case "list":
-                        projectManager.listPrint();
-                        break;
-                    case "list -s new":
-                        projectManager.listNewPrint();
-                        break;
-                    case "list -s in_progress":
-                        projectManager.listInProgressPrint();
-                        break;
-                    case "list -s done":
-                        projectManager.listDonePrint();
-                        break;
-                    case "complete":
-                        projectManager.completeTask(console);
-                        break;
-                    case "new":
-                        projectManager.newTask(console);
-                        break;
-                    case "edit":
-                        projectManager.editTask(console);
-                        break;
-                    case "remove":
-                        projectManager.removeTask(console);
-                        break;
-                    case "exit":
-                        console.close();
-                        System.exit(0);
-                        break;
-                    default:
-                        throw new Exception("Incorrect command input. Enter \"help\" to get " +
-                                "information about available commands.");
+            String commandStr = console.nextLine().trim().toLowerCase();
+            Command cmd = commandMap.get(commandStr);
+            if (cmd != null) {
+                try {
+                    cmd.execute();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            } else {
+                    System.out.println("Incorrect command input. Enter \"help\"" +
+                            " to get information about available commands.");
+                }
             }
         }
     }
-}
+
+
